@@ -46,7 +46,7 @@ class Space:
 
     def plot(self, x, y):
         self.plt.plot(x, y)
-        self.set_ground_point(max(x))
+        self.gap = max(self.gap, max(x) - self.get_ground_point() + 1)
 
     def letter_changed(self):
         self.set_ground_point(self.get_ground_point() + self.gap)
@@ -67,12 +67,29 @@ class Space:
             if letter in self.saved_letters:
                 self.draw_from_letter(self.saved_letters[letter])
 
+    def clear_slate(self):
+        self.set_ground_point(0)
+        self.gap = 1
+        self.plt.clf()
+
 if __name__ == "__main__":
     
     space = Space()
     p_letter = Letter('P', [[0, 0, 0, 2, 0, 3, 0, 5], [0, 5, 2, 5, 2, 3, 0, 3]])
-    space.draw_from_letter(p_letter)
-    space.draw_from_word("P")
+    d_letter = Letter('D', [[0,0,0,2,0,3,0,5], [0,0,4,0,4,5,0,5]])
+    r_letter = Letter('R', [[0,0,0,2,0,3,0,5], [0,3,4,3,4,5,0,5], [0,3,1,2,2,1,3,0]])
+    x_letter = Letter('X', [[0,0,0.75,1.375,1.25,3.125,2,5], [2,0,1.25,1.375,0.75,3.125,0,5]])
+    a_letter = Letter('A', [[0,0,0.75,1.375,1.25,3.125,2,5], [4,0,3.25,1.375,2.75,3.125,2,5], [1,2.5,1.5,2.5,2.5,2.5,3,2.5]])
+    w_letter = Letter('W', [[0,0,0,2,0,3,0,5], [0,0,0,0,2,2.5,2,2.5], [2,2.5,2,2.5,4,0,4,0], [4,0,4,2,4,3,4,5]])
+
+    space.make_predefined_model(w_letter)
+    space.make_predefined_model(x_letter)
+    space.make_predefined_model(r_letter)
+    space.make_predefined_model(d_letter)
+    space.make_predefined_model(p_letter)
+    space.make_predefined_model(a_letter)
+    
+    space.draw_from_word("DRAW")
     
     space.show()
-
+    space.clear_slate()
